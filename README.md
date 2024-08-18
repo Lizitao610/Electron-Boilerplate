@@ -1,7 +1,5 @@
 # Electron + React + tailwind css + shadcn/ui Boilerplate
 
-下面是原始 readme
-
 ---
 
 # Vite Electron Builder Boilerplate
