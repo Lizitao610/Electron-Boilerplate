@@ -1,20 +1,20 @@
-import type {MockedClass, MockedObject} from 'vitest';
-import {beforeEach, expect, test, vi} from 'vitest';
-import {restoreOrCreateWindow} from '../src/mainWindow';
+import type {MockedClass, MockedObject} from "vitest";
+import {beforeEach, expect, test, vi} from "vitest";
+import {restoreOrCreateWindow} from "../src/mainWindow";
 
-import {BrowserWindow} from 'electron';
+import {BrowserWindow} from "electron";
 
 /**
  * Mock real electron BrowserWindow API
  */
-vi.mock('electron', () => {
+vi.mock("electron", () => {
   // Use "as unknown as" because vi.fn() does not have static methods
   const bw = vi.fn() as unknown as MockedClass<typeof BrowserWindow>;
   bw.getAllWindows = vi.fn(() => bw.mock.instances);
   bw.prototype.loadURL = vi.fn((_: string, __?: Electron.LoadURLOptions) => Promise.resolve());
   bw.prototype.loadFile = vi.fn((_: string, __?: Electron.LoadFileOptions) => Promise.resolve());
   // Use "any" because the on function is overloaded
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // @ts-ignore
   bw.prototype.on = vi.fn<any>();
   bw.prototype.destroy = vi.fn();
   bw.prototype.isDestroyed = vi.fn();
@@ -22,9 +22,9 @@ vi.mock('electron', () => {
   bw.prototype.focus = vi.fn();
   bw.prototype.restore = vi.fn();
 
-  const app: Pick<Electron.App, 'getAppPath'> = {
+  const app: Pick<Electron.App, "getAppPath"> = {
     getAppPath(): string {
-      return '';
+      return "";
     },
   };
 
@@ -35,7 +35,7 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-test('Should create a new window', async () => {
+test("Should create a new window", async () => {
   const {mock} = vi.mocked(BrowserWindow);
   expect(mock.instances).toHaveLength(0);
 
@@ -52,7 +52,7 @@ test('Should create a new window', async () => {
   }
 });
 
-test('Should restore an existing window', async () => {
+test("Should restore an existing window", async () => {
   const {mock} = vi.mocked(BrowserWindow);
 
   // Create a window and minimize it.
@@ -66,7 +66,7 @@ test('Should restore an existing window', async () => {
   expect(appWindow.restore).toHaveBeenCalledOnce();
 });
 
-test('Should create a new window if the previous one was destroyed', async () => {
+test("Should create a new window if the previous one was destroyed", async () => {
   const {mock} = vi.mocked(BrowserWindow);
 
   // Create a window and destroy it.
