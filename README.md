@@ -1,4 +1,4 @@
-# Electron + React + tailwind css + shadcn/ui Boilerplate
+# Electron + React + tailwind css + shadcn/ui 项目模版
 
 ---
 
